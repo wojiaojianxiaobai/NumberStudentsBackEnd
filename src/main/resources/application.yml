@@ -1,0 +1,24 @@
+server:
+  port: 8081
+
+
+persion:
+  lastName: zhansan
+  age: 18
+  boss: false
+  birth: 2020/3/8
+  maps: {k1: v1,k2: 12}
+  lists:
+    - lisi
+    - zhaoliu
+  dog:
+    name: xiaogou0
+    age: 2
+
+spring:
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/springboot_db?useUnicode=true&characterEncoding=UTF-8&allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC
+    driverClassName: com.mysql.jdbc.Driver
+    username: root
+    password: "123456"
+    type: com.alibaba.druid.pool.DruidDataSource
