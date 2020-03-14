@@ -15,7 +15,7 @@ import wb.z.dao.UserDao;
 @RestController
 public class HelloController {
 
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    @RequestMapping(value = "/login")
     public String Login(String username, String password) {
 
         int status = login(username, password);
@@ -38,7 +38,7 @@ public class HelloController {
 
     }
 
-    @RequestMapping(value = "/register", method = RequestMethod.GET)   //接受浏览器的hello
+    @RequestMapping(value = "/register")
     public String Register(String username, String password) {
         try {
             register(username, password);
