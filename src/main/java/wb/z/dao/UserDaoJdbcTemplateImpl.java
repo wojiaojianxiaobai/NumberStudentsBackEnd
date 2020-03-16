@@ -21,17 +21,18 @@ public class UserDaoJdbcTemplateImpl implements UserDao {
 
     @Override
     public int add(User user) {
-        String sql = "insert into t_author(user_name,user_password) " +
-                "values(:userName,:userPassword)";
+        String userMessage = "null";
+        String sql = "insert into t_author(user_name,user_password,user_message) " +
+                "values(:userName,:userPassword,:userMessage )";
         Map<String, Object> param = new HashMap<>();
         param.put("userName", user.getUserName());
         param.put("userPassword", user.getUserPassword());
+        param.put("userMessage",userMessage);
         return (int) namedParameterJdbcTemplate.update(sql, param);
     }
 
     @Override
-    public int login(User user) {
-        Map<String, Object> param = new HashMap<>();
+    public User login(User user) {
         String userName = user.getUserName();
         String sql = "SELECT * FROM springboot_db.t_author " +
                 "where user_name = " + userName;
@@ -39,22 +40,73 @@ public class UserDaoJdbcTemplateImpl implements UserDao {
         BeanPropertyRowMapper<User> rowMapper = new BeanPropertyRowMapper<User>(User.class);
         List<User> userList = new ArrayList<>();
         userList = namedParameterJdbcTemplate.query(sql, new HashMap<>(), new BeanPropertyRowMapper<User>(User.class));
+        User curUser = new User();
         if (userList.size() < 1) {
             System.out.println("wb.z : 登录失败，用户名不存在");
-            return StateConfig.LOGIN_FAIL_USERNAME_ERROR;
+            curUser.setUserState(StateConfig.LOGIN_FAIL_USERNAME_ERROR);
 
         } else if (userList.get(0).getUserPassword().equals(user.getUserPassword())) {
             System.out.println("wb.z : 登录成功");
-            return StateConfig.LOGIN_SUCCESS;
+            curUser = userList.get(0);
+            curUser.setUserState(StateConfig.LOGIN_SUCCESS);
+            curUser.setUserMessage(userList.get(0).getUserMessage());
         } else {
-            System.out.println("wb.z : 登录失败");
-            return StateConfig.LOGIN_FAIL_PASSWORD_ERROR;
+            curUser = userList.get(0);
+            System.out.println("wb.z : 登录失败" + user.getUserPassword());
+            curUser.setUserState(StateConfig.LOGIN_FAIL_PASSWORD_ERROR);
         }
+        return curUser;
     }
 
     @Override
     public int update(User user) {
         return 0;
+    }
+
+    @Override
+    public int updateUserMessage(User user) {
+        String sql = "UPDATE springboot_db.t_author SET user_message = " + user.getUserMessage()
+                + " WHERE user_name = " + user.getUserName();
+        Map<String, Object> param = new HashMap<>();
+        param.put("userMessage",user.getUserMessage());
+        namedParameterJdbcTemplate.update(sql,param);
+        return StateConfig.OPERATION_SUCCESS;
+    }
+
+    @Override
+    public int changeUserPassword(User user) {
+
+        String sql = "UPDATE springboot_db.t_author SET user_password = " + user.getUserPassword()
+                + " WHERE user_name = " + user.getUserName();
+        Map<String, Object> param = new HashMap<>();
+        param.put("userPassword",user.getUserPassword());
+        namedParameterJdbcTemplate.update(sql,param);
+        return 1;
+    }
+
+    @Override
+    public int changeStudyPassword(User user,String newStudyPassword) {
+        String userName = user.getUserName();
+        String sql = "SELECT * FROM springboot_db.t_author " +
+                "where user_name = " + userName;
+        System.out.println("wb.z : userName " + userName);
+        List<User> userList = new ArrayList<>();
+        userList = namedParameterJdbcTemplate.query(sql, new HashMap<>(), new BeanPropertyRowMapper<User>(User.class));
+        if (userList.size() < 1) {
+            System.out.println("wb.z : 验证失败，用户名不存在");
+            return StateConfig.OPERATION_FAIL;
+        } else if (userList.get(0).getStudyPassword().equals(user.getStudyPassword())) {
+            System.out.println("wb.z : 验证通过");
+            String changeStudyPasswordSql = "UPDATE springboot_db.t_author SET study_password = " + newStudyPassword
+                    + " WHERE user_name = " + user.getUserName();
+            Map<String, Object> param = new HashMap<>();
+            param.put("userPassword",user.getUserPassword());
+            namedParameterJdbcTemplate.update(changeStudyPasswordSql,param);
+            return StateConfig.OPERATION_SUCCESS;
+        } else {
+            System.out.println("wb.z : 验证失败" + user.getStudyPassword());
+            return StateConfig.OPERATION_FAIL;
+        }
     }
 
     @Override

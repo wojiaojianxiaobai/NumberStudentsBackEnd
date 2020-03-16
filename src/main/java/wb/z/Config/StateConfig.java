@@ -8,5 +8,8 @@ public final class StateConfig {
     public final static int REGISTER_FAIL = 3;
     public final static int LOGIN_FAIL_USERNAME_ERROR = 4;
 
+    public final static int OPERATION_SUCCESS = 5;
+    public final static int OPERATION_FAIL = 6;
+
 
 }

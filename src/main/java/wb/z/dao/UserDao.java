@@ -8,9 +8,15 @@ public interface UserDao {
 
     int add(User user);
 
-    int login(User user);
+    User login(User user);
 
     int update(User user);
+
+    int updateUserMessage(User user);
+
+    int changeUserPassword(User user);
+
+    int changeStudyPassword(User user,String newStudyPassword);
 
     int delete(Long id);
 

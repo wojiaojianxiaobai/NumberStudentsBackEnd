@@ -5,9 +5,47 @@ public class User {
     private Long id;
     private String userName;
     private String userPassword;
+    private String studyPassword;
+    private String userMessage;
+    private int userState;
+
+
+    public User(){
+
+    }
+
+    public User(String userName,String userPassword){
+        this.userName = userName;
+        this.userPassword = userPassword;
+    }
+
+    public String getStudyPassword() {
+        return studyPassword;
+    }
+
+    public void setStudyPassword(String studyPassword) {
+        this.studyPassword = studyPassword;
+    }
+
+
+    public int getUserState() {
+        return userState;
+    }
+
+    public void setUserState(int userState) {
+        this.userState = userState;
+    }
 
     public String getUserNickName() {
         return userNickName;
+    }
+
+    public String getUserMessage() {
+        return userMessage;
+    }
+
+    public void setUserMessage(String userMessage) {
+        this.userMessage = userMessage;
     }
 
     public void setUserNickName(String userNickName) {
