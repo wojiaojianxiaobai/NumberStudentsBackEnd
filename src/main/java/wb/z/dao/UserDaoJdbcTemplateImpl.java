@@ -28,6 +28,7 @@ public class UserDaoJdbcTemplateImpl implements UserDao {
         param.put("userName", user.getUserName());
         param.put("userPassword", user.getUserPassword());
         param.put("userMessage",userMessage);
+        param.put("studyPassword",user.getStudyPassword());
         return (int) namedParameterJdbcTemplate.update(sql, param);
     }
 

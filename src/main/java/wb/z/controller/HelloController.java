@@ -49,9 +49,9 @@ public class HelloController {
     }
 
     @RequestMapping(value = "/register")
-    public String Register(String username, String password) {
+    public String Register(String username, String password,String studyPassword) {
         try {
-            register(username, password);
+            register(username, password,studyPassword);
             return StateMessage.registerSuccess();
         } catch (DuplicateKeyException e) {
             return StateMessage.registerFailUserNameError();
@@ -142,10 +142,11 @@ public class HelloController {
     @Autowired
     private UserDao userDao;
 
-    public void register(String userId, String userPassword) {
+    public void register(String userId, String userPassword,String studyPassword) {
         User user = new User();
         user.setUserName(userId);
         user.setUserPassword(userPassword);
+        user.setStudyPassword(studyPassword);
         userDao.add(user);
     }
 
