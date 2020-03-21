@@ -1,10 +1,13 @@
 package wb.z.dao;
 
+import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -21,14 +24,16 @@ public class UserDaoJdbcTemplateImpl implements UserDao {
 
     @Override
     public int add(User user) {
-        String userMessage = "null";
-        String sql = "insert into t_author(user_name,user_password,user_message) " +
-                "values(:userName,:userPassword,:userMessage )";
+        int curTime = (int) System.currentTimeMillis()/100000;
+        String sql = "insert into t_author(user_name,user_password,user_message,user_nick_name,study_password,user_personalized_signature) " +
+                "values(:userName,:userPassword,:userMessage,:userNickName,:studyPassword,:userPersonalizedSignature )";
         Map<String, Object> param = new HashMap<>();
         param.put("userName", user.getUserName());
         param.put("userPassword", user.getUserPassword());
-        param.put("userMessage",userMessage);
-        param.put("studyPassword",user.getStudyPassword());
+        param.put("userMessage", "null");
+        param.put("studyPassword","null");
+        param.put("userNickName","学霸" + curTime);
+        param.put("userPersonalizedSignature","这个人很懒，什么也没留下");
         return (int) namedParameterJdbcTemplate.update(sql, param);
     }
 
@@ -66,10 +71,16 @@ public class UserDaoJdbcTemplateImpl implements UserDao {
 
     @Override
     public int updateUserMessage(User user) {
-        String sql = "UPDATE springboot_db.t_author SET user_message = " + user.getUserMessage()
+        String sql = "UPDATE springboot_db.t_author SET "
+                + "user_message = " + "'" + user.getUserMessage() + "'"
+                + ", user_personalized_signature = " + "'" + user.getUserPersonalizedSignature() + "'"
+                + ", user_nick_name = " + "'" + user.getUserNickName() + "'"
                 + " WHERE user_name = " + user.getUserName();
+        System.out.print("wb.z :" + user.getUserPersonalizedSignature());
         Map<String, Object> param = new HashMap<>();
         param.put("userMessage",user.getUserMessage());
+        param.put("userPersonalizedSignature",user.getUserPersonalizedSignature());
+        param.put("userNickName",user.getUserNickName());
         namedParameterJdbcTemplate.update(sql,param);
         return StateConfig.OPERATION_SUCCESS;
     }

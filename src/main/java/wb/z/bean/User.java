@@ -7,6 +7,8 @@ public class User {
     private String userPassword;
     private String studyPassword;
     private String userMessage;
+    private String userNickName;
+    private String userPersonalizedSignature;
     private int userState;
 
 
@@ -17,6 +19,15 @@ public class User {
     public User(String userName,String userPassword){
         this.userName = userName;
         this.userPassword = userPassword;
+    }
+
+
+    public String getUserPersonalizedSignature() {
+        return userPersonalizedSignature;
+    }
+
+    public void setUserPersonalizedSignature(String userPersonalizedSignature) {
+        this.userPersonalizedSignature = userPersonalizedSignature;
     }
 
     public String getStudyPassword() {
@@ -52,7 +63,6 @@ public class User {
         this.userNickName = userNickName;
     }
 
-    private String userNickName;
 
     public Long getId() {
         return id;

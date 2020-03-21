@@ -29,6 +29,9 @@ public class HelloController {
                 jsonObject.put("message","登录成功");
                 System.out.println("userMessage: " + user.getUserMessage());
                 jsonObject.put("userMessage",user.getUserMessage());
+                jsonObject.put("userNickName",user.getUserNickName());
+                jsonObject.put("userPersonalizedSignature",user.getUserPersonalizedSignature());
+                jsonObject.put("studyPassword",user.getStudyPassword());
                 System.out.println("登录成功！");
                 return jsonObject.toString();
             }
@@ -49,11 +52,12 @@ public class HelloController {
     }
 
     @RequestMapping(value = "/register")
-    public String Register(String username, String password,String studyPassword) {
+    public String Register(String username, String password) {
         try {
-            register(username, password,studyPassword);
+            register(username, password);
             return StateMessage.registerSuccess();
         } catch (DuplicateKeyException e) {
+            System.out.print(e.toString());
             return StateMessage.registerFailUserNameError();
         } catch (Exception e) {
             System.out.print(e.toString());
@@ -65,12 +69,15 @@ public class HelloController {
     }
 
     @RequestMapping(value = "/updateUserMessage")
-    public String updateUserMessage(String username,String userMessage) {
+    public String updateUserMessage(String username,String userNickName,String userMessage,String userPersonalizedSignature) {
+        System.out.print("userName :" +username + "  nickName:" + userNickName + " userMessage:" + userMessage + " userPersonalizedSignature" + userPersonalizedSignature );
         try {
             int state;
             User user = new User();
             user.setUserName(username);
+            user.setUserNickName(userNickName);
             user.setUserMessage(userMessage);
+            user.setUserPersonalizedSignature(userPersonalizedSignature);
             state =  userDao.updateUserMessage(user);
             if (state == StateConfig.OPERATION_SUCCESS){
                 return "修改成功";
@@ -122,7 +129,7 @@ public class HelloController {
             user.setUserName(username);
             user.setStudyPassword(oldStudyPassword);
             int state = userDao.changeStudyPassword(user,newStudyPassword);
-            if (state == StateConfig.OPERATION_SUCCESS){        //用登录的方法验证账号密码是否正确
+            if (state == StateConfig.OPERATION_SUCCESS){
                 return "修改成功";
             }else{
                 return "原学霸密码不正确";
@@ -142,11 +149,11 @@ public class HelloController {
     @Autowired
     private UserDao userDao;
 
-    public void register(String userId, String userPassword,String studyPassword) {
+    public void register(String userId, String userPassword) {
         User user = new User();
         user.setUserName(userId);
         user.setUserPassword(userPassword);
-        user.setStudyPassword(studyPassword);
+        user.setStudyPassword("null");
         userDao.add(user);
     }
 
