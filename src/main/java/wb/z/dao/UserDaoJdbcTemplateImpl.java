@@ -25,7 +25,7 @@ public class UserDaoJdbcTemplateImpl implements UserDao {
     @Override
     public int add(User user) {
         int curTime = (int) System.currentTimeMillis()/100000;
-        String sql = "insert into t_author(user_name,user_password,user_message,user_nick_name,study_password,user_personalized_signature) " +
+        String sql = "insert into t_user(user_name,user_password,user_message,user_nick_name,study_password,user_personalized_signature) " +
                 "values(:userName,:userPassword,:userMessage,:userNickName,:studyPassword,:userPersonalizedSignature )";
         Map<String, Object> param = new HashMap<>();
         param.put("userName", user.getUserName());
@@ -40,7 +40,7 @@ public class UserDaoJdbcTemplateImpl implements UserDao {
     @Override
     public User login(User user) {
         String userName = user.getUserName();
-        String sql = "SELECT * FROM springboot_db.t_author " +
+        String sql = "SELECT * FROM springboot_db.t_user " +
                 "where user_name = " + userName;
         System.out.println("wb.z : userName " + userName);
         BeanPropertyRowMapper<User> rowMapper = new BeanPropertyRowMapper<User>(User.class);
@@ -71,7 +71,7 @@ public class UserDaoJdbcTemplateImpl implements UserDao {
 
     @Override
     public int updateUserMessage(User user) {
-        String sql = "UPDATE springboot_db.t_author SET "
+        String sql = "UPDATE springboot_db.t_user SET "
                 + "user_message = " + "'" + user.getUserMessage() + "'"
                 + ", user_personalized_signature = " + "'" + user.getUserPersonalizedSignature() + "'"
                 + ", user_nick_name = " + "'" + user.getUserNickName() + "'"
@@ -88,7 +88,7 @@ public class UserDaoJdbcTemplateImpl implements UserDao {
     @Override
     public int changeUserPassword(User user) {
 
-        String sql = "UPDATE springboot_db.t_author SET user_password = " + user.getUserPassword()
+        String sql = "UPDATE springboot_db.t_user SET user_password = " + user.getUserPassword()
                 + " WHERE user_name = " + user.getUserName();
         Map<String, Object> param = new HashMap<>();
         param.put("userPassword",user.getUserPassword());
@@ -99,7 +99,7 @@ public class UserDaoJdbcTemplateImpl implements UserDao {
     @Override
     public int changeStudyPassword(User user,String newStudyPassword) {
         String userName = user.getUserName();
-        String sql = "SELECT * FROM springboot_db.t_author " +
+        String sql = "SELECT * FROM springboot_db.t_user " +
                 "where user_name = " + userName;
         System.out.println("wb.z : userName " + userName);
         List<User> userList = new ArrayList<>();
@@ -109,7 +109,7 @@ public class UserDaoJdbcTemplateImpl implements UserDao {
             return StateConfig.OPERATION_FAIL;
         } else if (userList.get(0).getStudyPassword().equals(user.getStudyPassword())) {
             System.out.println("wb.z : 验证通过");
-            String changeStudyPasswordSql = "UPDATE springboot_db.t_author SET study_password = " + newStudyPassword
+            String changeStudyPasswordSql = "UPDATE springboot_db.t_user SET study_password = " + newStudyPassword
                     + " WHERE user_name = " + user.getUserName();
             Map<String, Object> param = new HashMap<>();
             param.put("userPassword",user.getUserPassword());

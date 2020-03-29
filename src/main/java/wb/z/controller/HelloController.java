@@ -5,17 +5,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import wb.z.Config.StateConfig;
+import wb.z.bean.MomentsItem;
 import wb.z.bean.StateMessage;
 import wb.z.bean.User;
+import wb.z.dao.MomentsDao;
 import wb.z.dao.UserDao;
+
+import java.io.File;
+import java.util.HashMap;
 
 /*@ResponseBody   //返回return内容
 @Controller*/
 @RestController
 public class HelloController {
 
+    private static final boolean IS_DEBUG_IN_LOCAL = false;
     @RequestMapping(value = "/login")
     public String Login(String username, String password) {
 
@@ -146,8 +154,63 @@ public class HelloController {
 
     }
 
+    @RequestMapping(value = "/addMoment")
+    public String addMoment(String momentsId,
+                            MultipartFile momentPicture,
+                             String userName,
+                            String userNickName,
+                            String addMomentTime,
+                            String momentTitle,
+                            String momentContent) {
+
+        MomentsItem momentsItem = new MomentsItem();
+        momentsItem.setMomentId(momentsId);
+        momentsItem.setUserName(userName);
+        momentsItem.setUserNickName(userNickName);
+        momentsItem.setMomentTime(addMomentTime);
+        momentsItem.setMomentTitle(momentTitle);
+        momentsItem.setMomentContent(momentContent);
+
+        if (!momentPicture.isEmpty()) {
+            String path;
+            if (IS_DEBUG_IN_LOCAL){
+                path = "D:/111";
+            }else {
+                path = "/home/NumerousStudentsMomentsPicture";
+            }
+            String fileName = momentPicture.getOriginalFilename();
+//            momentsItem.setMomentPicturePath(path+ "/" + fileName);
+            momentsItem.setMomentPicturePath(fileName);
+
+            File dest = new File(new File(path).getAbsolutePath()+ "/" + fileName);
+            if (!dest.getParentFile().exists()) {
+                dest.getParentFile().mkdirs();
+            }
+            try {
+                momentPicture.transferTo(dest); // 保存文件
+            } catch (Exception e) {
+                e.printStackTrace();
+                return "false";
+            }
+        }else {
+            momentsItem.setMomentPicturePath("null");
+        }
+
+        System.out.print(" momentsId :" + momentsId + " momentPicture:" + momentPicture.getOriginalFilename());
+        System.out.print(" userName :" + userName + " userNickName:" + userNickName);
+        System.out.print(" addMomentTime :" + addMomentTime + " momentTitle:" + momentTitle);
+        System.out.print(" momentContent :" + momentContent);
+
+        int state = mMomentsDao.addMomentsItem(momentsItem);
+        return "true";
+
+    }
+
     @Autowired
     private UserDao userDao;
+
+    @Autowired
+    private MomentsDao mMomentsDao;
 
     public void register(String userId, String userPassword) {
         User user = new User();

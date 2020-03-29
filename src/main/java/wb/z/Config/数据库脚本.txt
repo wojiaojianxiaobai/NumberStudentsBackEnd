@@ -1,0 +1,28 @@
+CREATE DATABASE /*!32312 IF NOT EXISTS*/`springboot_db` /*!40100 DEFAULT CHARACTER SET utf8 */;
+ 
+USE `springboot_db`;
+ 
+DROP TABLE IF EXISTS `t_author`;
+ 
+CREATE TABLE `t_user` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '序号',
+  `user_name` varchar(32) NOT NULL unique COMMENT '用户账号',
+  `user_nick_name` varchar(32) NOT NULL COMMENT '用户昵称',
+  `user_personalized_signature` varchar(32) NOT NULL COMMENT '个性签名',
+  `user_password` varchar(32) NOT NULL COMMENT '用户密码',
+  `study_password` varchar(32) COMMENT '学霸密码',
+  `user_message` varchar(1024)  COMMENT '用户信息',
+  PRIMARY KEY (`id`,`user_name`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `t_moments` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '序号',
+  `moment_id` varchar(32) NOT NULL unique COMMENT '朋友圈id标识',
+  `moment_picture_path` varchar(1024) NOT NULL COMMENT '图片路径',
+  `user_name` varchar(32) NOT NULL COMMENT '发布者账号',
+  `user_nick_name` varchar(32) NOT NULL COMMENT '发布者昵称',
+  `moment_time` varchar(32) COMMENT '发布时间',
+  `moment_title` varchar(124) COMMENT '标题',
+  `moment_content` varchar(1024) COMMENT '内容',
+  PRIMARY KEY (`id`,`moment_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
