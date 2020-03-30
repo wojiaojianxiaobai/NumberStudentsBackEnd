@@ -8,4 +8,6 @@ public interface MomentsDao {
     int addMomentsItem(MomentsItem momentsItem);
 
     int deleteMomentsItem();
+
+    String readMoments();
 }

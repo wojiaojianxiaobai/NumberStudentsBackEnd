@@ -1,5 +1,7 @@
 package wb.z.bean;
 
+import com.alibaba.fastjson.JSONObject;
+
 public class MomentsItem {
     String mMomentId;
     String mMomentPicturePath;
@@ -63,5 +65,19 @@ public class MomentsItem {
 
     public void setMomentContent(String mMomentContent) {
         this.mMomentContent = mMomentContent;
+    }
+
+    @Override
+    public String toString() {
+        JSONObject jsonObject= new JSONObject();
+        jsonObject.put("mMomentId",mMomentId);
+        jsonObject.put("mMomentPicturePath",mMomentPicturePath);
+        jsonObject.put("mUserName",mUserName);
+        jsonObject.put("mUserNickName",mUserNickName);
+        jsonObject.put("mMomentTime",mMomentTime);
+        jsonObject.put("mMomentTitle",mMomentTitle);
+        jsonObject.put("mMomentContent",mMomentContent);
+
+        return jsonObject.toString();
     }
 }
