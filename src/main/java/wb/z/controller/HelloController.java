@@ -213,7 +213,25 @@ public class HelloController {
 
         int state = mMomentsDao.addMomentsItem(momentsItem);
         return "true";
+    }
 
+    @RequestMapping(value = "/addNoPictureMoment")
+    public String addMoment(String momentsId,
+                            String userName,
+                            String userNickName,
+                            String addMomentTime,
+                            String momentTitle,
+                            String momentContent) {
+        MomentsItem momentsItem = new MomentsItem();
+        momentsItem.setMomentId(momentsId);
+        momentsItem.setUserName(userName);
+        momentsItem.setUserNickName(userNickName);
+        momentsItem.setMomentTime(addMomentTime);
+        momentsItem.setMomentTitle(momentTitle);
+        momentsItem.setMomentContent(momentContent);
+        momentsItem.setMomentPicturePath("null");
+        int state = mMomentsDao.addMomentsItem(momentsItem);
+        return "true";
     }
 
     @RequestMapping(value = "/readMoment")
