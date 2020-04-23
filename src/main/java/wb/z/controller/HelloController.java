@@ -82,7 +82,10 @@ public class HelloController {
 
     @RequestMapping(value = "/updateUserMessage")
     public String updateUserMessage(String username,String userNickName,String userMessage,String userPersonalizedSignature) {
-        System.out.print("userName :" +username + "  nickName:" + userNickName + " userMessage:" + userMessage + " userPersonalizedSignature" + userPersonalizedSignature );
+//        System.out.print("userName :" +username + "  nickName:" + userNickName + " userMessage:" + userMessage + " userPersonalizedSignature" + userPersonalizedSignature );
+
+        ChangeUserMessage changeUserMessage = new ChangeUserMessage();
+        changeUserMessage.updateUserMessage();
         try {
             int state;
             User user = new User();
@@ -100,8 +103,8 @@ public class HelloController {
         } catch (DuplicateKeyException e) {
             return StateMessage.registerFailUserNameError();
         } catch (Exception e) {
-            System.out.print(e.toString());
-            return StateMessage.unKnowError();
+            System.out.print("\n---" + e.toString() + "---\n");
+            return e.toString();
         } finally {
             System.out.println("插入完成！");
         }

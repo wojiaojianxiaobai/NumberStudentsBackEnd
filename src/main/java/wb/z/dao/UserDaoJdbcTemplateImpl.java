@@ -76,12 +76,18 @@ public class UserDaoJdbcTemplateImpl implements UserDao {
                 + ", user_personalized_signature = " + "'" + user.getUserPersonalizedSignature() + "'"
                 + ", user_nick_name = " + "'" + user.getUserNickName() + "'"
                 + " WHERE user_name = " + user.getUserName();
-        System.out.print("wb.z :" + user.getUserPersonalizedSignature());
+
+
+//        System.out.print("wb.z sql: " + sql);
         Map<String, Object> param = new HashMap<>();
-        param.put("userMessage",user.getUserMessage());
-        param.put("userPersonalizedSignature",user.getUserPersonalizedSignature());
-        param.put("userNickName",user.getUserNickName());
+        System.out.print("\n----wb.z sql: 插入成功---\n");
         namedParameterJdbcTemplate.update(sql,param);
+        String sql2 =
+                /*"SET SQL_SAFE_UPDATES = 0;"
+                +*/ "UPDATE springboot_db.t_moments SET user_nick_name = " + "'" + user.getUserNickName() + "'"
+                + " WHERE user_name = " + user.getUserName();
+        System.out.print("\n----wb.z sql: " + sql2 + "---\n");
+        namedParameterJdbcTemplate.update(sql2,param);
         return StateConfig.OPERATION_SUCCESS;
     }
 
