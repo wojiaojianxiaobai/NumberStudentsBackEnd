@@ -5,16 +5,64 @@ public class User {
     private Long id;
     private String userName;
     private String userPassword;
+    private String studyPassword;
+    private String userMessage;
+    private String userNickName;
+    private String userPersonalizedSignature;
+    private int userState;
+
+
+    public User(){
+
+    }
+
+    public User(String userName,String userPassword){
+        this.userName = userName;
+        this.userPassword = userPassword;
+    }
+
+
+    public String getUserPersonalizedSignature() {
+        return userPersonalizedSignature;
+    }
+
+    public void setUserPersonalizedSignature(String userPersonalizedSignature) {
+        this.userPersonalizedSignature = userPersonalizedSignature;
+    }
+
+    public String getStudyPassword() {
+        return studyPassword;
+    }
+
+    public void setStudyPassword(String studyPassword) {
+        this.studyPassword = studyPassword;
+    }
+
+
+    public int getUserState() {
+        return userState;
+    }
+
+    public void setUserState(int userState) {
+        this.userState = userState;
+    }
 
     public String getUserNickName() {
         return userNickName;
+    }
+
+    public String getUserMessage() {
+        return userMessage;
+    }
+
+    public void setUserMessage(String userMessage) {
+        this.userMessage = userMessage;
     }
 
     public void setUserNickName(String userNickName) {
         this.userNickName = userNickName;
     }
 
-    private String userNickName;
 
     public Long getId() {
         return id;
